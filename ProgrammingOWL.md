@@ -84,4 +84,4 @@ val texts = for {
 }
 ```
 
-Here we convert all the properties and filler class expressions used in existential restrictions in ZFA into a set of string representations. Importing the converters from `JavaConverters` lets us call `asScala` on Java collections, to make them work in Scala for-comprehensions. The first part of the comprehension is a *generator*, which takes items from the set of axioms one by one. If the item matches the extractor pattern, the variable values are used in the *yield* expression to create an item in the new collection which is stored in `texts`.
+Here we convert all the properties and filler class expressions used in existential restrictions in ZFA into a set of string representations. Importing the converters from `JavaConverters` lets us call `asScala` on Java collections, to make them work in Scala for-comprehensions. The first part of the comprehension is a *generator*, which takes items from the set of axioms on the right of the `<-`, one by one. If the item matches the extractor pattern on the left, the variable values are used in the *yield* expression to create an item in the new collection which is stored in `texts`.
