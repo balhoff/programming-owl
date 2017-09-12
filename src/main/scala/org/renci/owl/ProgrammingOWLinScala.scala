@@ -17,4 +17,12 @@ object ProgrammingOWLinScala {
       Person, ObjectSomeValuesFrom(isSiblingOf, ObjectIntersectionOf(
         Person, ObjectSomeValuesFrom(isParentOf, Person)))))))
 
+  1 + 2
+
+  1.+(2)
+
+  "hello".split("ll")
+
+  "hello" split "ll"
+
 }

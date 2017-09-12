@@ -5,10 +5,11 @@ Scala is a programming language that runs on the Java Virtual Machine (JVM). The
 
 - **JVM language.** Since Scala runs on the JVM, Java libraries can be used transparently and with full performance. The majority of OWL and semantic web toolkits are developed in Java.
 - **Reduced boilerplate.** While Scala is statically typed, like Java, the compiler is able to infer the types of expressions, allowing the programmer to dispense with many type annotations. This results in code that can look more like Python than Java, with all the benefits of compile-time type-checking.
+- **Functional programming support.** Higher order functions (like `list.map()`) are a lot more fun than writing loops. Some of this was added to Java 8, but it's much nicer in Scala.
 - **Flexible syntax.** Operator overloading, symbolic method names, optional parentheses, implicit arguments, and other features make Scala a powerful language for constructing libraries which act like embedded domain-specific languages (DSLs).
 
 ## Scowl
-Scowl is an OWL DSL implemented in Scala. It wraps functionality provided by the Java OWL API. Scowl makes it possible to embed complex OWL class expressions and axioms within program code. OWL axioms written using Scowl are declarative and easy to read. Two OWL styles are supported: Manchester syntax and Functional syntax.
+Scowl is an OWL DSL implemented in Scala. It wraps functionality provided by the Java [OWL API](http://owlapi.sourceforge.net). Scowl makes it possible to embed complex OWL class expressions and axioms within program code. OWL axioms written using Scowl are declarative and easy to read. Two OWL styles are supported: [Manchester syntax](https://www.w3.org/TR/owl2-manchester-syntax/) and [Functional syntax](https://www.w3.org/TR/owl2-syntax/).
 
 ## Code comparison
 Here is a complex axiom written in Java with the OWL API:
@@ -28,7 +29,7 @@ OWLAxiom axiom = factory.getOWLEquivalentClassesAxiom(FirstCousin, factory.getOW
                         Person, factory.getOWLObjectSomeValuesFrom(isParentOf, Person)))))));
 ```
 
-Here is the same code written using Scala and Scowl:
+Here is the same code written using Scala and Scowl, in Manchester style:
 
 ```scala
 val hasParent = ObjectProperty("http://www.co-ode.org/roberts/family-tree.owl#hasParent")
@@ -47,3 +48,12 @@ val axiomFunctional = EquivalentClasses(FirstCousin, ObjectIntersectionOf(
       Person, ObjectSomeValuesFrom(isSiblingOf, ObjectIntersectionOf(
         Person, ObjectSomeValuesFrom(isParentOf, Person)))))))
 ```
+
+Scowl doesn't create its own objects. The return values for the above methods are all the same `OWLClass`es and `OWLAxiom`s that you get from the `OWLDataFactory`.
+
+## Using Scowl
+### Imports
+Adding an `import org.phenoscape.scowl._` will bring in the entire Scowl syntax. That's usually easier than importing requirements one-by-one, especially since most Scowl functionality is provided *implicitly*, rather than directly referenced in your code.
+
+### Infix notation
+While it may not look like it, when you're using the Scowl Manchester style, you are just calling methods and passing arguments. In Scala, you can optionally replace the method-calling punctuation (`.()`) with spaces. In fact, this is how operators are implemented: addition is simply a method named `+`. Rather than `1 + 2`, you could also write `1.+(2)`. A more standard method can also be called this way: `"hello".split("ll")` also works as `"hello" split "ll"`. Although this is not really encouraged for most alphabetic-named methods, it is a great fit for embedded DSLs.
