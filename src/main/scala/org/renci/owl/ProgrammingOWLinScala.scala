@@ -1,6 +1,9 @@
 package org.renci.owl
 
 import org.phenoscape.scowl._
+import org.semanticweb.owlapi.model.OWLClassExpression
+import org.semanticweb.owlapi.apibinding.OWLManager
+import org.semanticweb.owlapi.model.IRI
 
 object ProgrammingOWLinScala {
 
@@ -24,5 +27,20 @@ object ProgrammingOWLinScala {
   "hello".split("ll")
 
   "hello" split "ll"
+
+  def handleClassExpression(cls: OWLClassExpression): Unit = cls match {
+    case Class(iri)                     => println(s"Named class with IRI $iri")
+    case ObjectIntersectionOf(operands) => println(s"Intersection with ${operands.size} operands")
+    case _                              => println("Expression type not supported")
+  }
+
+  import scala.collection.JavaConverters._
+  val ontology = OWLManager.createOWLOntologyManager().loadOntology(IRI.create("http://purl.obolibrary.org/obo/zfa.owl"))
+
+  val text = for {
+    SubClassOf(_, subclass, ObjectSomeValuesFrom(property, filler)) <- ontology.getAxioms().asScala
+  } yield {
+    s"$property $filler"
+  }
 
 }

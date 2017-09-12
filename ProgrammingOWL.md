@@ -4,7 +4,7 @@
 Scala is a programming language that runs on the Java Virtual Machine (JVM). The language emphasizes a fusion of object-oriented and functional programming styles. The name "Scala" comes from "scalable language". It is meant to scale not just in terms of computing power but also from quick scripting development to complex systems. Scala has several features which make it a good fit for programmatic manipulation of OWL ontologies:
 
 - **JVM language.** Since Scala runs on the JVM, Java libraries can be used transparently and with full performance. The majority of OWL and semantic web toolkits are developed in Java.
-- **Reduced boilerplate.** While Scala is statically typed, like Java, the compiler is able to infer the types of expressions, allowing the programmer to dispense with many type annotations. This results in code that can look more like Python than Java, with all the benefits of compile-time type-checking.
+- **Reduced boilerplate.** Scala is statically typed like Java, however the compiler is able to infer the types of expressions, allowing the programmer to dispense with many type annotations. This results in code that can look more like Python than Java, with all the benefits of compile-time type-checking.
 - **Functional programming support.** Higher order functions (like `list.map()`) are a lot more fun than writing loops. Some of this was added to Java 8, but it's much nicer in Scala.
 - **Flexible syntax.** Operator overloading, symbolic method names, optional parentheses, implicit arguments, and other features make Scala a powerful language for constructing libraries which act like embedded domain-specific languages (DSLs).
 
@@ -57,3 +57,31 @@ Adding an `import org.phenoscape.scowl._` will bring in the entire Scowl syntax.
 
 ### Infix notation
 While it may not look like it, when you're using the Scowl Manchester style, you are just calling methods and passing arguments. In Scala, you can optionally replace the method-calling punctuation (`.()`) with spaces. In fact, this is how operators are implemented: addition is simply a method named `+`. Rather than `1 + 2`, you could also write `1.+(2)`. A more standard method can also be called this way: `"hello".split("ll")` also works as `"hello" split "ll"`. Although this is not really encouraged for most alphabetic-named methods, it is a great fit for embedded DSLs.
+
+### Extractors
+The Scowl functional syntax implements a method called `unapply`, which acts like the reverse of a constructor: it takes an object and tries to give back the arguments used to create the object. Objects with `unapply` methods are called "extractors". They can be used within Scala pattern-matching and can be quite convenient:
+
+```scala
+def handleClassExpression(cls: OWLClassExpression): Unit = cls match {
+  case Class(iri)                     => println(s"Named class with IRI $iri")
+  case ObjectIntersectionOf(operands) => println(s"Intersection with ${operands.size} operands")
+  case _                              => println("Expression type not supported")
+}
+```
+
+Variable names introduced in the "constructor" on the left side are like holes that can be filled in by values that match the shape of the constructor. This example also demonstrates the very handy Scala string-interpolation syntax.
+
+Extractors can also be used within "for comprehensions", which kind of a super-powered version of Python's list comprehensions:
+
+```scala
+import scala.collection.JavaConverters._
+val ontology = OWLManager.createOWLOntologyManager().loadOntology(IRI.create("http://purl.obolibrary.org/obo/zfa.owl"))
+
+val texts = for {
+  SubClassOf(_, subclass, ObjectSomeValuesFrom(property, filler)) <- ontology.getAxioms().asScala
+} yield {
+  s"$property $filler"
+}
+```
+
+Here we convert all the properties and filler class expressions used in existential restrictions in ZFA into a set of string representations. Importing the converters from `JavaConverters` lets us call `asScala` on Java collections, to make them work in Scala for-comprehensions. The first part of the comprehension is a *generator*, which takes items from the set of axioms one by one. If the item matches the extractor pattern, the variable values are used in the *yield* expression to create an item in the new collection which is stored in `texts`.
