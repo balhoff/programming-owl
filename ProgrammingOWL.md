@@ -69,9 +69,9 @@ def handleClassExpression(cls: OWLClassExpression): Unit = cls match {
 }
 ```
 
-Variable names introduced in the "constructor" on the left side are like holes that can be filled in by values that match the shape of the constructor. This example also demonstrates the very handy Scala string-interpolation syntax.
+Variable names introduced in the "constructor" on the left side are like holes that can be filled in by values that match the shape of the constructor. This example also demonstrates the very handy Scala [string-interpolation](http://docs.scala-lang.org/overviews/core/string-interpolation.html) syntax.
 
-Extractors can also be used within "for comprehensions", which kind of a super-powered version of Python's list comprehensions:
+Extractors can also be used within "for comprehensions", which are kind of a super-powered version of Python's list comprehensions:
 
 ```scala
 import scala.collection.JavaConverters._
@@ -85,3 +85,6 @@ val texts = for {
 ```
 
 Here we convert all the properties and filler class expressions used in existential restrictions in ZFA into a set of string representations. Importing the converters from `JavaConverters` lets us call `asScala` on Java collections, to make them work in Scala for-comprehensions. The first part of the comprehension is a *generator*, which takes items from the set of axioms on the right of the `<-`, one by one. If the item matches the extractor pattern on the left, the variable values are used in the *yield* expression to create an item in the new collection which is stored in `texts`.
+
+### Learning Scowl syntax
+The best way to get an idea of how various class expressions and axioms are written in Scowl is to look through the examples provided with the distribution. All of the constructs from the [OWL 2 Web Ontology Language Primer](https://www.w3.org/TR/owl2-primer/) are implemented using both the [Manchester style](https://github.com/phenoscape/scowl/blob/master/src/main/scala/org/phenoscape/scowl/example/OWL2PrimerManchester.scala) and the [Functional style](https://github.com/phenoscape/scowl/blob/master/src/main/scala/org/phenoscape/scowl/example/OWL2PrimerFunctional.scala).
