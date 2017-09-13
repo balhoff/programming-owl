@@ -88,3 +88,28 @@ Here we convert all the properties and filler class expressions used in existent
 
 ### Learning Scowl syntax
 The best way to get an idea of how various class expressions and axioms are written in Scowl is to look through the examples provided with the distribution. All of the constructs from the [OWL 2 Web Ontology Language Primer](https://www.w3.org/TR/owl2-primer/) are implemented using both the [Manchester style](https://github.com/phenoscape/scowl/blob/master/src/main/scala/org/phenoscape/scowl/example/OWL2PrimerManchester.scala) and the [Functional style](https://github.com/phenoscape/scowl/blob/master/src/main/scala/org/phenoscape/scowl/example/OWL2PrimerFunctional.scala).
+
+Scowl is quite useful for legibly generating OWL axioms from tables of input data. Here's a [tiny demonstration script](https://github.com/balhoff/programming-owl/blob/master/src/main/scala/org/renci/owl/ConvertTableToOWL.scala).
+
+## Start using Scala
+The best way to start using Scala is to install [SBT](http://www.scala-sbt.org), the Scala build tool. If you're on a Mac and use [Homebrew](https://brew.sh) to install command-line tools, it's as simple as `brew install sbt`. There are also directions for [Windows](http://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html) and [Linux](http://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html). Basic SBT project definitions are quite simple. Here is build.sbt from this demo repository:
+
+```scala
+
+organization  := "org.renci"
+
+name          := "programming-owl"
+
+version       := "0.1"
+
+licenses := Seq("BSD-3-Clause" -> url("https://opensource.org/licenses/BSD-3-Clause")) //CC-ZERO
+
+scalaVersion  := "2.12.3"
+
+libraryDependencies ++= {
+  Seq(
+    "net.sourceforge.owlapi"      %  "owlapi-distribution"    % "4.3.1",
+    "org.phenoscape"              %% "scowl"                  % "1.3"
+  )
+}
+```
