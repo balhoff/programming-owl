@@ -92,7 +92,7 @@ The best way to get an idea of how various class expressions and axioms are writ
 Scowl is quite useful for legibly generating OWL axioms from tables of input data. Here's a [tiny demonstration script](https://github.com/balhoff/programming-owl/blob/master/src/main/scala/org/renci/owl/ConvertTableToOWL.scala).
 
 ## Start using Scala
-The best way to start using Scala is to install [SBT](http://www.scala-sbt.org), the Scala build tool. If you're on a Mac and use [Homebrew](https://brew.sh) to install command-line tools, it's as simple as `brew install sbt`. There are also directions for [Windows](http://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html) and [Linux](http://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html). Basic SBT project definitions are quite simple. Here is build.sbt from this demo repository:
+The best way to start using Scala is to install [SBT](http://www.scala-sbt.org), the Scala build tool. If you're on a Mac and use [Homebrew](https://brew.sh) to install command-line tools, it's as simple as `brew install sbt`. There are also directions for [Windows](http://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Windows.html) and [Linux](http://www.scala-sbt.org/1.x/docs/Installing-sbt-on-Linux.html). Basic SBT project definitions are quite simple. Here is [build.sbt](https://github.com/balhoff/programming-owl/blob/master/build.sbt) from this demo repository:
 
 ```scala
 
