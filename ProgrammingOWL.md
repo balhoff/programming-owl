@@ -112,3 +112,5 @@ libraryDependencies ++= {
 }
 
 ```
+
+If you have `sbt` installed, and have cloned [this project from GitHub](https://github.com/balhoff/programming-owl), you can run the table conversion demonstration script at the terminal: `sbt "run parts.tsv parts.owl"`
